@@ -29,11 +29,12 @@ public class RecipeServiceImpl implements RecipeService {
         // Set <Recipe> recipeList=new HashSet<>();
         //recipeRepository.findAll().forEach();
     }
-    public Recipe getRecipeById (Long along){
+    public Recipe findById(Long along){
        Optional <Recipe> recipeOptional=recipeRepository.findById(along);
-       if (!recipeOptional.isPresent())
-           throw new RuntimeException("ttt");
-              else
+       if (!recipeOptional.isPresent()) {
+           throw new RuntimeException("Recipe Not Found");
+       }
+              //else
            return recipeOptional.get();
 
     }

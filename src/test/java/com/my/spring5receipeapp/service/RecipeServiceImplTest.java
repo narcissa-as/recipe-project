@@ -5,7 +5,6 @@ import com.my.spring5receipeapp.repository.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.HashSet;
@@ -49,15 +48,19 @@ class RecipeServiceImplTest {
 
 
     }
+
     @Test
     void getRecipeByIdTest() {
-        Recipe recipe=new Recipe();
+        Recipe recipe = new Recipe();
         recipe.setId(1L);
-        Optional<Recipe> recipeOptional=Optional.of(recipe);
+        Optional<Recipe> recipeOptional = Optional.of(recipe);
         when(recipeRepository.findById(any())).thenReturn(recipeOptional);
-       recipe =recipeRepository.findById(1L).get();
-        verify(recipeRepository,times(1)).findById(anyLong());
-        assertNotNull(recipe);
+        Recipe recipeReturned = recipeService.findById(1L);
+        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, never()).findAll();
+        assertEquals(recipeReturned, recipe);
+        assertNotNull(recipeReturned);
 
     }
+
 }
