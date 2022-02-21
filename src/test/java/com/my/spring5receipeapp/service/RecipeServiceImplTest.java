@@ -1,5 +1,7 @@
 package com.my.spring5receipeapp.service;
 
+import com.my.spring5receipeapp.converters.RecipeCommandToRecipe;
+import com.my.spring5receipeapp.converters.RecipeToRecipeCommand;
 import com.my.spring5receipeapp.domain.Recipe;
 import com.my.spring5receipeapp.repository.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +20,10 @@ class RecipeServiceImplTest {
     RecipeServiceImpl recipeService;
     @Mock
     private RecipeRepository recipeRepository;
+    @Mock
+    private RecipeToRecipeCommand recipeToRecipeCommand;
+    @Mock
+    private RecipeCommandToRecipe recipeCommandToRecipe;
 
     @BeforeEach
         //setup method is for initializing needed Beans
@@ -26,7 +32,7 @@ class RecipeServiceImplTest {
         MockitoAnnotations.openMocks(this);
         //here we  inject the needed been to our main class object, then we have the ready Bean for Test.
 
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeToRecipeCommand, recipeCommandToRecipe, recipeRepository);
     }
 
     @Test

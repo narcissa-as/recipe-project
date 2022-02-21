@@ -39,7 +39,7 @@ public class Recipe {
 
     public void setNote(Notes note) {
         this.note = note;
-        note.setRecipe(this);
+      //  note.setRecipe(this);
     }
 
     public void addIngredient(Ingredient ingredient) {
