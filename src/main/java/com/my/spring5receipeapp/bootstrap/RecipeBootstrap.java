@@ -95,7 +95,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         guacamole.setPrepTime(10);
         guacamole.setCookTime(10);
         guacamole.setSource("Internet");
-        guacamole.setUrl("http://www.simplyrecipes.com/recipes/perfect_guacamole/");
+        guacamole.setUrl("https://www.simplyrecipes.com/");
         guacamole.setDirections("1. Cut the avocado:\n" +
                 "Cut the avocados in half. Remove the pit. Score the inside of the avocado with a blunt knife and scoop out the flesh with a spoon.Place in a bowl.2. Mash the avocado flesh:\n" +
                 "Using a fork, roughly mash the avocado. (Dont overdo it! The guacamole should be a little chunky.)3. Add remaining ingredients to taste:\n" +
@@ -136,7 +136,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         tacos.setPrepTime(20);
         tacos.setCookTime(10);
         tacos.setServing(2);
-        tacos.setUrl("http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/");
+        tacos.setUrl("https://www.simplyrecipes.com/");
         tacos.setSource("Internet");
         tacos.setDifficulty(Difficulty.Moderate);
 
