@@ -38,10 +38,13 @@ public class Recipe {
 
 
     public void setNote(Notes note) {
-        this.note = note;
-        note.setRecipe(this);
+        //"if" added then
+        if (note != null) {
+            this.note = note;
+            // added to make di-directional relation easier
+            note.setRecipe(this);
+        }
     }
-
     public void addIngredient(Ingredient ingredient) {
         this.ingredients.add(ingredient);
         ingredient.setRecipe(this);
