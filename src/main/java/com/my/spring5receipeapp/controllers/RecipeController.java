@@ -25,14 +25,16 @@ class RecipeController {
         return "recipe/show";
     }
 
-
+//for creating a new Recipe obj
     @RequestMapping("recipe/new")
     public String newRecipe(Model model) {
         model.addAttribute("recipe", new RecipeCommand());
         return "recipe/recipeform";
     }
-
+//post command from a recipe object
     @PostMapping("recipe")
+    //@ModelAttribute is an annotation from spring that matches the form post properties with the given object
+    // automatically
     public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
         RecipeCommand savedCommand=recipeService.saveRecipeCommand(command);
         //redirect is a command that redirect to specific URL
