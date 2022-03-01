@@ -1,5 +1,6 @@
 package com.my.spring5receipeapp.service;
 
+import com.my.spring5receipeapp.commands.RecipeCommand;
 import com.my.spring5receipeapp.converters.RecipeCommandToRecipe;
 import com.my.spring5receipeapp.converters.RecipeToRecipeCommand;
 import com.my.spring5receipeapp.domain.Recipe;
@@ -70,4 +71,37 @@ class RecipeServiceImplTest {
 
     }
 
+    @Test
+    void getRecipeCommandByIdTest() throws Exception {
+        //given
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+        Optional<Recipe> recipeOptional = Optional.of(recipe);
+        //when
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        RecipeCommand command = new RecipeCommand();
+        command.setId(1L);
+        when(recipeToRecipeCommand.convert(any())).thenReturn(command);
+
+        RecipeCommand commandById = recipeService.findCommandById(1L);
+        //then
+        //my recommendation test
+        //assertEquals(commandById.getId(), command.getId());
+        //but these are tutor's test
+        assertNotNull(commandById,"Null recipe returned");
+        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository,never()).findAll();
+    }
+
+    @Test
+    void getDeleteByIdTest() {
+        //given
+        Long idToDelete = Long.valueOf(2L);
+        //when
+        recipeService.deleteById(idToDelete);
+        //then
+        //no when,since method has void return type
+        verify(recipeRepository, times(1)).deleteById(idToDelete);
+    }
 }
