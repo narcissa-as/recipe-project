@@ -6,8 +6,6 @@ import com.my.spring5receipeapp.domain.Recipe;
 import com.my.spring5receipeapp.domain.UnitOfMeasure;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 
 import java.math.BigDecimal;
 
@@ -44,7 +42,7 @@ assertNotNull(converter.convert(new Ingredient()));
         ingredient.setRecipe(RECIPE);
         ingredient.setAmount(AMOUNT);
         IngredientCommand command = converter.convert(ingredient);
-        assertNull(command.getUnitOfMeasure());
+        assertNull(command.getUom());
         assertEquals(ID_VALUE, command.getId());
         assertEquals(DESCRIPTION, command.getDescription());
         assertEquals(AMOUNT, command.getAmount());
@@ -62,9 +60,9 @@ assertNotNull(converter.convert(new Ingredient()));
         IngredientCommand ingredientCommand =converter.convert(ingredient);
         assertEquals(ID_VALUE,ingredientCommand.getId());
         assertEquals(DESCRIPTION,ingredientCommand.getDescription());
-        assertEquals(UOM_ID,ingredientCommand.getUnitOfMeasure().getId());
+        assertEquals(UOM_ID,ingredientCommand.getUom().getId());
         assertEquals(AMOUNT,ingredientCommand.getAmount());
 
-        assertNotNull(ingredientCommand.getUnitOfMeasure());
+        assertNotNull(ingredientCommand.getUom());
     }
 }

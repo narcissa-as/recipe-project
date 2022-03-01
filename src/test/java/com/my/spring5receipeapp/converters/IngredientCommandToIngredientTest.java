@@ -41,7 +41,7 @@ IngredientCommand command=new IngredientCommand();
         command.setAmount(AMOUNT);
         UnitOfMeasureCommand unitOfMeasureCommand=new UnitOfMeasureCommand();
         unitOfMeasureCommand.setId(UOM_ID);
-        command.setUnitOfMeasure(unitOfMeasureCommand);
+        command.setUom(unitOfMeasureCommand);
 
         //when
         Ingredient ingredient=converter.convert(command);
@@ -60,7 +60,7 @@ IngredientCommand command=new IngredientCommand();
         command.setId(ID_VALUE);
         command.setDescription(DESCRIPTION);
         command.setAmount(AMOUNT);
-        command.setUnitOfMeasure(null);
+        command.setUom(null);
 
         //when
         Ingredient ingredient=converter.convert(command);

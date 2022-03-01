@@ -7,7 +7,10 @@ import java.util.Set;
 
 @org.springframework.stereotype.Service
 public interface RecipeService {
-    public Set<Recipe> getRecipes();
-    public Recipe findById(Long along);
-    public RecipeCommand saveRecipeCommand(RecipeCommand command);
+    Set<Recipe> getRecipes();
+    Recipe findById(Long along);
+    RecipeCommand findCommandById(Long along);
+    RecipeCommand saveRecipeCommand(RecipeCommand command);
+
+
 }

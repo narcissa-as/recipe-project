@@ -19,26 +19,33 @@ class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @RequestMapping("/recipe/show/{id}")
+    @RequestMapping("/recipe/{id}/show")
     public String showById(@PathVariable String id, Model model) {
         model.addAttribute("recipe", recipeService.findById(Long.valueOf(id)));
         return "recipe/show";
     }
 
-//for creating a new Recipe obj
+    //for creating a new Recipe obj
     @RequestMapping("recipe/new")
     public String newRecipe(Model model) {
         model.addAttribute("recipe", new RecipeCommand());
         return "recipe/recipeform";
     }
-//post command from a recipe object
-    @PostMapping("recipe")
-    //@ModelAttribute is an annotation from spring that matches the form post properties with the given object
-    // automatically
-    public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
-        RecipeCommand savedCommand=recipeService.saveRecipeCommand(command);
-        //redirect is a command that redirect to specific URL
-        return "redirect:/recipe/show/" +savedCommand.getId() ;
 
+    @RequestMapping("recipe/{id}/update")
+    public String updateRecipe(@PathVariable String id, Model model) {
+        model.addAttribute("recipe",recipeService.findCommandById(Long.valueOf(id)));
+        return ("recipe/recipeform");
     }
+
+    //post command from a recipe object
+    @PostMapping("recipe")
+    //@ModelAttribute is an annotation from spring that matches the form post properties with
+    // the given object automatically
+    public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
+        RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
+        //redirect is a command that redirect to specific URL
+        return "redirect:/recipe/" + savedCommand.getId() + "/show";
+    }
+
 }

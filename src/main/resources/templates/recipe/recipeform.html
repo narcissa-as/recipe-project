@@ -23,8 +23,12 @@
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <!--here we send RecipeCommand to HTML file and show a Recipe Object in our form and th:action
-             says that the Thymeleaf is going to parse it and creates the URL for us-->
+            <!--here we send an empty RecipeCommand object in HTML file to client side,
+             and th:action Specifies where to send the form-data when the form is submitted
+             I guess this invokes post controller method of recipe:saveOrUpdate.
+             and the method is post because client side sends the recipe properties -data- to server side-->
+          <!--  <form th:object="${recipe}" th:action="@{/recipe/}" method="post"> -->
+            <!-- after adding update part, changing method part only-->
             <form th:object="${recipe}" th:action="@{/recipe/}" method="post">
                 <!--this is a Generic form for create and update so when we have not Id it's a create type and when
                  we have Id is an update-->
@@ -87,7 +91,7 @@
                             <div class="row">
                                 <div class="col-md-3 form-group">
                                     <label>Servings:</label>
-                                   <input type="text" class="form-control" th:field="*{serving}"/>
+                                    <input type="text" class="form-control" th:field="*{serving}"/>
                                 </div>
                                 <div class="col-md-3 form-group">
                                     <label>Source:</label>
