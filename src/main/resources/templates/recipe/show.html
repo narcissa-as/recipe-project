@@ -1,3 +1,4 @@
+<!--this HTML file is for showing a Recipe, after clicking on view link-on the RecipeForm form, this form opens -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -90,7 +91,16 @@
                 </div>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h1 class="panel-title">Ingredients</h1>
+                        <!--adding a new div as a container for panel title and our new button -->
+                        <div class="row">
+                            <div class="col-md-11 ">
+                                <h1 class="panel-title">Ingredients</h1>
+                            </div>
+                            <div class="col-md-1">
+                                <a class="btn btn-default" href="#"
+                                   th:href="@{'/recipe/' + ${recipe.id} + '/ingredients'}" role="button">View</a>
+                            </div>
+                        </div>
                     </div>
                     <div class="panel-body">
                         <div class="row">
