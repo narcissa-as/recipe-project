@@ -29,7 +29,7 @@ public class IngredientController {
 
         // use command object to avoid lazy load errors in Thymeleaf.
         model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(recipeId)));
-        return "recipe/ingredient/list";
+        return "list1";
     }
 
     @GetMapping
@@ -50,17 +50,18 @@ public class IngredientController {
         model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
         return "recipe/ingredient/ingredientform";
     }
-
     // we have changed the ingredient values, and now it's turn to get the Ingredient Command object from the
     // form and save that back (persist it)
     @PostMapping
     @RequestMapping("recipe/{recipeId}/ingredient")
-    public String saveOrUpdate(@PathVariable String recipeId, @ModelAttribute IngredientCommand command){
-        IngredientCommand savedCommand=ingredientService.saveIngredientCommand(command);
-        log.debug("saved recipe id="+savedCommand.getRecipeId());
-        log.debug("saved ingredient id="+savedCommand.getId());
+    public String saveOrUpdate(@PathVariable String recipeId, @ModelAttribute IngredientCommand command) {
+        IngredientCommand savedCommand = ingredientService.saveIngredientCommand(command);
+        log.debug("saved recipe id=" + savedCommand.getRecipeId());
+        log.debug("saved ingredient id=" + savedCommand.getId());
 
         return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredient/" + savedCommand.getId() + "/show";
+
     }
+
 
 }
