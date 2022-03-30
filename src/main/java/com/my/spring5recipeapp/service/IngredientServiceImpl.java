@@ -27,6 +27,7 @@ public class IngredientServiceImpl implements IngredientService {
         this.ingredientCommandToIngredient = ingredientCommandToIngredient;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
     }
+
     @Override
     public IngredientCommand findByRecipeIdAndIngredientId(Long recipeId, Long ingredientId) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
@@ -60,6 +61,7 @@ public class IngredientServiceImpl implements IngredientService {
         } else {
 
             Recipe recipe = recipeOptional.get();
+            //if the ingredient with that id exist in DB
             Optional<Ingredient> ingredientOptional =
                     recipe.getIngredients().
                             stream()
@@ -78,12 +80,28 @@ public class IngredientServiceImpl implements IngredientService {
             } else {
                 recipe.addIngredient(ingredientCommandToIngredient.convert(command));
             }
+
+            //then saving ready Recipe to the DB
             Recipe savedRecipe = recipeRepository.save(recipe);
+
+            //finding object that has been saved before(updated one)
+            Optional<Ingredient> savedIngredientOptional = savedRecipe.getIngredients().stream()
+                    .filter(recipeIngredients -> recipeIngredients.getId().equals(command.getId()))
+                    .findFirst();
+
+            //another case: new obj and create one that has not Id
+            //check by description
+            if (!savedIngredientOptional.isPresent()) {
+                //not totally safe... But best guess, trying to find true ingredient
+                savedIngredientOptional = savedRecipe.getIngredients().stream()
+                        .filter(recipeIngredients -> recipeIngredients.getDescription().equals(command.getDescription()))
+                        .filter(recipeIngredients -> recipeIngredients.getDescription().equals(command.getDescription()))
+                        .filter(recipeIngredients -> recipeIngredients.getAmount().equals(command.getAmount()))
+                        .findFirst();
+                //to do check for fail
+            }
             return
-            ingredientToIngredientCommand.convert(savedRecipe.getIngredients().stream()
-                    .filter(recipeIngredients -> recipeIngredients.getId()
-                            .equals(command.getId()))
-                    .findFirst().get());
+                    ingredientToIngredientCommand.convert(savedIngredientOptional.get());
         }
 
     }

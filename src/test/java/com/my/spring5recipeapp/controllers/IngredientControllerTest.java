@@ -3,6 +3,7 @@ package com.my.spring5recipeapp.controllers;
 import com.my.spring5recipeapp.commands.IngredientCommand;
 import com.my.spring5recipeapp.commands.RecipeCommand;
 import com.my.spring5recipeapp.commands.UnitOfMeasureCommand;
+import com.my.spring5recipeapp.domain.Recipe;
 import com.my.spring5recipeapp.service.IngredientService;
 import com.my.spring5recipeapp.service.RecipeService;
 import com.my.spring5recipeapp.service.UnitOfMeasureService;
@@ -42,7 +43,7 @@ public class IngredientControllerTest {
     }
 
     @Test
-    public void testlistIngredient() throws Exception {
+    public void testListIngredient() throws Exception {
         //given
         RecipeCommand recipeCommand = new RecipeCommand();
         recipeCommand.setId(1L);
@@ -54,6 +55,23 @@ public class IngredientControllerTest {
                 .andExpect(model().attributeExists("recipe"));
         //then
         verify(recipeService, times(1)).findCommandById(anyLong());
+    }
+
+    @Test
+    public void testNewIngredientForm() throws Exception {
+        //given
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(2L);
+        //when
+        when(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand);
+        when(unitOfMeasureService.listAllUoms()).thenReturn(new HashSet<>());
+        //then
+        mockMvc.perform(get("/recipe/1/ingredient/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/ingredient/ingredientform"))
+                .andExpect(model().attributeExists("ingredient"))
+                .andExpect(model().attributeExists("uomList"));
+        verify(recipeService,times(1)).findCommandById(anyLong());
     }
 
     @Test
@@ -83,7 +101,7 @@ public class IngredientControllerTest {
         //then
         mockMvc.perform(get("/recipe/1/ingredient/2/update"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("ingredientForm"))
+                .andExpect(view().name("recipe/ingredient/ingredientform"))
                 .andExpect(model().attributeExists("ingredient"))
                 .andExpect(model().attributeExists("uomList"));
     }
