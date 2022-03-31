@@ -2,12 +2,18 @@ package com.my.spring5recipeapp.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Data
+//@Data
+//changing @Data to @Getter and @Setter to avoid an Error related to lombok
+@Getter
+@Setter
 @EqualsAndHashCode(exclude = {"recipe"})
+// added to avoid getting into endless loop because of bi-drectional references and relations (lombok)
 @Entity
 public class Ingredient {
     @Id

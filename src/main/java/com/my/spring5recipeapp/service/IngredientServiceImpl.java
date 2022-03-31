@@ -44,6 +44,7 @@ public class IngredientServiceImpl implements IngredientService {
         return ingredientCommandOptional.get();
     }
 
+
     // to work with detached entity it's better to use transactional method
     @Transactional
     @Override
@@ -105,6 +106,35 @@ public class IngredientServiceImpl implements IngredientService {
         }
 
     }
+
+    @Override
+    public void deleteById(Long recipeId, Long idToDelete) {
+        log.debug("Deleting recipe:" + recipeId + " and ingredient" + idToDelete);
+        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
+        if (recipeOptional.isPresent()) {
+            log.debug("found recipe");
+            Recipe recipe = recipeOptional.get();
+
+            Optional <Ingredient> ingredientOptional=recipe.getIngredients()
+                    .stream()
+                    .filter(ingredient -> ingredient.getId().equals(idToDelete))
+                    .findFirst();
+
+
+            if (recipeOptional.isPresent()) {
+                log.debug("found ingredient");
+                Ingredient ingredientToDelete=ingredientOptional.get();
+                //Deleting Recipe required first because of their relation
+                ingredientToDelete.setRecipe(null);
+                recipe.getIngredients().remove(ingredientToDelete);
+                recipeRepository.save(recipe);
+            } else {
+                log.debug("Recipe id not found " + recipeId);
+            }
+        }
+
+    }
+
 /* I guess s.th should be deleted
     Recipe updateRecipeIngredient(Recipe recipe) {
         Recipe recipe1 = new Recipe();
