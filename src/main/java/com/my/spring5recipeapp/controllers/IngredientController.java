@@ -29,8 +29,7 @@ public class IngredientController {
         this.unitOfMeasureService = unitOfMeasureService;
     }
 
-    @GetMapping
-    @RequestMapping("/recipe/{recipeId}/ingredients")
+    @GetMapping("/recipe/{recipeId}/ingredients")
     public String listIngredient(@PathVariable String recipeId, Model model) {
         log.debug("Getting ingredient list for recipe id: " + recipeId);
 
@@ -39,8 +38,7 @@ public class IngredientController {
         return "recipe/ingredient/list";
     }
 
-    @GetMapping
-    @RequestMapping("recipe/{recipeId}/ingredient/{id}/show")
+    @GetMapping("recipe/{recipeId}/ingredient/{id}/show")
     String showRecipeIngredient(@PathVariable String recipeId,
                                 @PathVariable String id, Model model) {
         model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
@@ -52,8 +50,7 @@ public class IngredientController {
     //in this method we create an ingredient obj and set RecipeId that we have and know here and then send new
     // ingredient obj with the ingredient form to user to fill 3 other properties,ingredient Id value has been set
     //for it from setter in POJO
-    @GetMapping
-    @RequestMapping("recipe/{recipeId}/ingredient/new")
+    @GetMapping("recipe/{recipeId}/ingredient/new")
     public String newRecipe(@PathVariable String recipeId, Model model) {
         // first we need to get the id of the recipe we want to add ingredient to
         //make sure we have a good id value
@@ -70,8 +67,7 @@ public class IngredientController {
     }
 
     //Method for showing the UPD page
-    @GetMapping
-    @RequestMapping("recipe/{recipeId}/ingredient/{id}/update")
+    @GetMapping("recipe/{recipeId}/ingredient/{id}/update")
     public String updateRecipeIngredient(@PathVariable String recipeId, @PathVariable String id, Model model) {
         model.addAttribute("ingredient",
                 ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
@@ -89,8 +85,7 @@ public class IngredientController {
 
     // we have changed the ingredient values, and now it's turn to get the Ingredient Command object from the
     // form and save that back (persist it)
-    @PostMapping
-    @RequestMapping("recipe/{recipeId}/ingredient")
+    @PostMapping("recipe/{recipeId}/ingredient")
     public String saveOrUpdate(@PathVariable String recipeId, @ModelAttribute IngredientCommand command) {
         IngredientCommand savedCommand = ingredientService.saveIngredientCommand(command);
         log.debug("saved recipe id=" + savedCommand.getRecipeId());
