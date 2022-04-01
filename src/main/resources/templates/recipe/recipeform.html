@@ -29,7 +29,7 @@
              and th:action Specifies where to send the form-data when the form is submitted
              I guess this invokes post controller method of recipe:saveOrUpdate.
              and the method is post because client side sends the recipe properties -data- to server side-->
-          <!--  <form th:object="${recipe}" th:action="@{/recipe/}" method="post"> -->
+            <!--  <form th:object="${recipe}" th:action="@{/recipe/}" method="post"> -->
             <!-- after adding update part, changing method part only-->
             <form th:object="${recipe}" th:action="@{/recipe/}" method="post">
                 <!--this is a Generic form for create and update so when we have not Id it's a create type and when
@@ -80,24 +80,18 @@
                                     <label>Cooktime:</label>
                                     <input type="text" class="form-control" th:field="*{cookTime}"/>
                                 </div>
-<!--
-                                <select class="form-control" th:field="*{difficulty}">
-                                    <option th:each="difficultyValue : ${T(guru.springframework.domain.Difficulty).values()}"
-                                            th:value="${difficultyValue.name()}"
-                                            th:text="${difficultyValue.name()}"
-                                    >val</option>
-                                </select>
-                                !-->
+
                                 <div class="col-md-3 form-group">
                                     <label>Difficulty:</label>
                                     <select class="form-control" th:field="*{difficulty}">
                                         <option th:each="difficultyValue : ${T(com.my.spring5recipeapp.domain.Difficulty).values()}"
-                                        th:value="${difficultyValue.name()}"
+                                                th:value="${difficultyValue.name()}"
                                                 th:text="${difficultyValue.name()}"
-                                        >val</option>
+                                        >val
+                                        </option>
                                     </select>
                                     <!--Select option control-->
-                                    <select class="form-control"th:remove="all">
+                                    <select class="form-control" th:remove="all">
                                         <option>Easy</option>
                                         <option>Medium</option>
                                         <option>Hard</option>
