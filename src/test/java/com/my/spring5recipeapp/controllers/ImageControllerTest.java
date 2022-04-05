@@ -8,10 +8,15 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
+
+import javax.servlet.http.HttpServletResponse;
+
+import java.nio.charset.StandardCharsets;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
@@ -64,5 +69,33 @@ public class ImageControllerTest {
         verify(imageService, times(1)).saveImageFile(anyLong(), any());
 
 
+    }
+
+    @Test
+    public void renderImageFromDB() throws Exception {
+        //given
+        RecipeCommand command = new RecipeCommand();
+        command.setId(1L);
+
+        String s = "fake image text";
+        Byte[] bytesBoxed = new Byte[s.getBytes().length];
+
+        int i = 0;
+        //the first part defines every cell of the array and its type,second part is the array
+        for (byte primByte : s.getBytes()) {
+            bytesBoxed[i++] = primByte;
+        }
+
+        command.setImage(bytesBoxed);
+        //when
+        when(recipeService.findCommandById(anyLong())).thenReturn(command);
+        MockHttpServletResponse response = mockMvc.perform(get("/recipe/1/recipeimage"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+
+        //getting response returned value to verify it
+        byte[] responseByte = response.getContentAsByteArray();
+
+        assertEquals(s.getBytes().length, responseByte.length);
     }
 }

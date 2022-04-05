@@ -33,6 +33,8 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
             command.setDescription(source.getDescription());
             command.setSource(source.getSource());
             command.setUrl(source.getUrl());
+            //added later for displaying image from DB
+            command.setImage(source.getImage());
             command.setDirections(source.getDirections());
             command.setPrepTime(source.getPrepTime());
             command.setCookTime(source.getCookTime());
