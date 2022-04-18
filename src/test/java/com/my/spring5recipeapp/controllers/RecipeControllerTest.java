@@ -2,6 +2,7 @@ package com.my.spring5recipeapp.controllers;
 
 import com.my.spring5recipeapp.commands.RecipeCommand;
 import com.my.spring5recipeapp.domain.Recipe;
+import com.my.spring5recipeapp.exceptions.NotFoundException;
 import com.my.spring5recipeapp.service.RecipeService;
 import org.junit.Before;
 //import org.junit.jupiter.api.Test;
@@ -11,6 +12,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Optional;
 
 import static com.fasterxml.jackson.databind.util.ClassUtil.name;
 import static org.mockito.Mockito.*;
@@ -66,6 +69,17 @@ public class RecipeControllerTest {
     }
 
     @Test
+    public void testGetRecipeNotFound() throws Exception {
+        // I checked and creating new Recipe obj and setting the Id to 1 is not important unless it has a specific
+        //reason that I don't know for now
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+        when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
+        mockMvc.perform(get("/recipe/1/show"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     public void testGetNewRecipeForm() throws Exception {
         //trainer has written this line too,but because it has never been  used I commented the line
         // RecipeCommand command=new RecipeCommand();
@@ -103,13 +117,14 @@ public class RecipeControllerTest {
                 .andExpect(model().attributeExists("recipe"));
 
     }
+
     @Test
     public void testDeleteAction() throws Exception {
 
         mockMvc.perform(get("/recipe/1/delete"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
-                verify(recipeService,times(1)).deleteById(anyLong());
+        verify(recipeService, times(1)).deleteById(anyLong());
     }
 
 }

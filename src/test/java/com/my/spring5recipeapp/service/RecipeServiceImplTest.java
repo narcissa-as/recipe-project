@@ -4,9 +4,11 @@ import com.my.spring5recipeapp.commands.RecipeCommand;
 import com.my.spring5recipeapp.converters.RecipeCommandToRecipe;
 import com.my.spring5recipeapp.converters.RecipeToRecipeCommand;
 import com.my.spring5recipeapp.domain.Recipe;
+import com.my.spring5recipeapp.exceptions.NotFoundException;
 import com.my.spring5recipeapp.repository.RecipeRepository;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -14,10 +16,12 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
-class RecipeServiceImplTest {
+public class RecipeServiceImplTest {
     RecipeServiceImpl recipeService;
     @Mock
     private RecipeRepository recipeRepository;
@@ -26,19 +30,18 @@ class RecipeServiceImplTest {
     @Mock
     private RecipeCommandToRecipe recipeCommandToRecipe;
 
-    @BeforeEach
-        //setup method is for initializing needed Beans
-    void setUp() {
+    @Before
+    //setup method is for initializing needed Beans
+    public void setUp() throws Exception {
         //with this command, Mockito initialize and give the mock to us
         MockitoAnnotations.openMocks(this);
         //here we  inject the needed been to our main class object, then we have the ready Bean for Test.
 
         recipeService = new RecipeServiceImpl(recipeToRecipeCommand, recipeCommandToRecipe, recipeRepository);
-
     }
 
     @Test
-    void getRecipes() {
+    public void getRecipes() {
         Recipe recipe = new Recipe();
         Set<Recipe> recipeData = new HashSet<>();
         recipeData.add(recipe);
@@ -54,11 +57,10 @@ class RecipeServiceImplTest {
         assertEquals(recipes.size(), 0);
         verify(recipeRepository,times(0)).findAll();*/
 
-
     }
 
     @Test
-    void getRecipeByIdTest() {
+    public void getRecipeByIdTest() throws Exception {
         Recipe recipe = new Recipe();
         recipe.setId(1L);
         Optional<Recipe> recipeOptional = Optional.of(recipe);
@@ -68,11 +70,10 @@ class RecipeServiceImplTest {
         verify(recipeRepository, never()).findAll();
         assertEquals(recipeReturned, recipe);
         assertNotNull(recipeReturned);
-
     }
 
     @Test
-    void getRecipeCommandByIdTest() throws Exception {
+    public void getRecipeCommandByIdTest() throws Exception {
         //given
         Recipe recipe = new Recipe();
         recipe.setId(1L);
@@ -89,13 +90,13 @@ class RecipeServiceImplTest {
         //my recommendation test
         //assertEquals(commandById.getId(), command.getId());
         //but these are tutor's test
-        assertNotNull(commandById,"Null recipe returned");
+        assertNotNull("Null recipe returned", commandById);
         verify(recipeRepository, times(1)).findById(anyLong());
-        verify(recipeRepository,never()).findAll();
+        verify(recipeRepository, never()).findAll();
     }
 
     @Test
-    void getDeleteByIdTest() {
+    public void getDeleteByIdTest() throws Exception {
         //given
         Long idToDelete = Long.valueOf(2L);
         //when
@@ -103,5 +104,12 @@ class RecipeServiceImplTest {
         //then
         //no when,since method has void return type
         verify(recipeRepository, times(1)).deleteById(idToDelete);
+    }
+    @Test (expected= NotFoundException.class)
+    public void getRecipeByIdTestNotFound() throws Exception{
+        Optional <Recipe> recipeOptional=Optional.empty();
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        Recipe returnedRecipe=recipeService.findById(1L);
+        //should go boom
     }
 }

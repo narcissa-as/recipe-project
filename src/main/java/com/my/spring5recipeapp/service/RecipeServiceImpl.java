@@ -4,6 +4,7 @@ import com.my.spring5recipeapp.commands.RecipeCommand;
 import com.my.spring5recipeapp.converters.RecipeCommandToRecipe;
 import com.my.spring5recipeapp.converters.RecipeToRecipeCommand;
 import com.my.spring5recipeapp.domain.Recipe;
+import com.my.spring5recipeapp.exceptions.NotFoundException;
 import com.my.spring5recipeapp.repository.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,8 @@ public class RecipeServiceImpl implements RecipeService {
     public Recipe findById(Long along) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(along);
         if (!recipeOptional.isPresent()) {
-            throw new RuntimeException("Recipe Not Found");
+            //throw new RuntimeException("Recipe Not Found!");
+            throw new NotFoundException("Recipe Not Found");
         }
         //else
         return recipeOptional.get();
