@@ -23,6 +23,7 @@ class RecipeController {
     //its a good habit to write @GetMapping/@PostMapping on methods to limit the methods
     @GetMapping("/recipe/{id}/show")
     public String showById(@PathVariable String id, Model model) {
+
         model.addAttribute("recipe", recipeService.findById(Long.valueOf(id)));
         return "recipe/show";
     }
@@ -68,7 +69,7 @@ class RecipeController {
         modelAndView.setViewName("404error");
         modelAndView.addObject("exception",exception);
 
-
         return modelAndView;
     }
+
 }
